@@ -28,6 +28,22 @@ const GET_ALL_QUESTIONS = async (req, res) => {
   }
 };
 
+const UPDATE_QUESTION = async (req, res) => {
+  try {
+    const updatedQuestion = await QuestionModel.findOneAndUpdate(
+      {
+        id: req.params.id,
+      },
+      { question_text: req.body.question_text, date: req.body.date },
+      { new: true }
+    );
+    return res.status(200).json({ updatedQuestion });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
 const DELETE_QUESTION = async (req, res) => {
   try {
     const deletedQuestion = await QuestionModel.findOneAndDelete({
@@ -40,4 +56,4 @@ const DELETE_QUESTION = async (req, res) => {
   }
 };
 
-export { ADD_QUESTION, GET_ALL_QUESTIONS, DELETE_QUESTION };
+export { ADD_QUESTION, GET_ALL_QUESTIONS, UPDATE_QUESTION, DELETE_QUESTION };

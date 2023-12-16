@@ -5,12 +5,13 @@ import {
   UPDATE_QUESTION,
   DELETE_QUESTION,
 } from "../controllers/question.js";
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/questions", ADD_QUESTION);
-router.get("/questions", GET_ALL_QUESTIONS);
-router.put("/questions/:id", UPDATE_QUESTION);
-router.delete("/questions/:id", DELETE_QUESTION);
+router.post("/", auth, ADD_QUESTION);
+router.get("/", GET_ALL_QUESTIONS);
+router.put("/:id", auth, UPDATE_QUESTION);
+router.delete("/:id", auth, DELETE_QUESTION);
 
 export default router;

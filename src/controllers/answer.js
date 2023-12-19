@@ -4,7 +4,7 @@ const ADD_ANSWER = async (req, res) => {
   try {
     const answer = new AnswerModel({
       answer_text: req.body.answer_text,
-      date: req.body.date,
+      date: new Date(),
       question_id: req.body.question_id,
     });
 

@@ -4,6 +4,30 @@ import jwt from "jsonwebtoken";
 
 const REGISTER = async (req, res) => {
   try {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const numericRegex = /\d/;
+
+    let email = req.body.email;
+    let password = req.body.password;
+
+    if (!emailRegex.test(email)) {
+      return res.status(404).json({ message: "Invalid email address" });
+    }
+
+    if (password.length < 8 || !numericRegex.test(password)) {
+      return res.status(404).json({
+        message:
+          "Passwords must be at least 8 characters and contain both alphabetic and numeric characters.",
+      });
+    }
+
+    const existingEmail = await UserModel.findOne({ email: req.body.email });
+    if (existingEmail) {
+      return res.status(404).json({
+        message: "There's already an account with this email.",
+      });
+    }
+
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -53,4 +77,24 @@ const LOGIN = async (req, res) => {
   }
 };
 
-export { REGISTER, LOGIN };
+const GET_ALL_USERS = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
+const GET_USER_BY_ID = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.id);
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
+export { REGISTER, LOGIN, GET_ALL_USERS, GET_USER_BY_ID };

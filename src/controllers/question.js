@@ -5,6 +5,7 @@ const ADD_QUESTION = async (req, res) => {
     const question = new QuestionModel({
       question_text: req.body.question_text,
       date: new Date(),
+      user_id: req.body.id,
     });
 
     question.id = question._id;

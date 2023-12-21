@@ -6,6 +6,7 @@ const AnswerSchema = mongoose.Schema({
   date: { type: Date, required: true },
   question_id: { type: String, required: true },
   gained_likes_number: { type: Number, required: false },
+  user_id: { type: String, required: false },
 });
 
 const AnswerModel = mongoose.model("Answer", AnswerSchema);

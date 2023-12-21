@@ -6,6 +6,7 @@ const ADD_ANSWER = async (req, res) => {
       answer_text: req.body.answer_text,
       date: new Date(),
       question_id: req.body.question_id,
+      user_id: req.body.id,
     });
 
     answer.id = answer._id;
